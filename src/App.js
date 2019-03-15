@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import "./App.css";
 
 import { CssBaseline } from "@material-ui/core";
+import Firebase, { FirebaseContext } from "./components/Firebase";
 import { MuiThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 
@@ -30,14 +31,16 @@ const AppContent = () => (
 
 function App() {
     return (
-        <Router>
-            <MuiThemeProvider theme={theme}>
-                <CssBaseline />
-                <div className='App'>
-                    <AppContent />
-                </div>
-            </MuiThemeProvider>
-        </Router>
+        <FirebaseContext.Provider value={new Firebase()}>
+            <Router>
+                <MuiThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <div className='App'>
+                        <AppContent />
+                    </div>
+                </MuiThemeProvider>
+            </Router>
+        </FirebaseContext.Provider>
     );
 }
 
