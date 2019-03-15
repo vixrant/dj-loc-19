@@ -6,8 +6,6 @@ function UserLayout({ children }) {
     return(
         <Fragment>
             <Navbar />
-            {/* Shim */}
-            <div style={{ height: "56px" }} /> 
             { children }
         </Fragment>
     );
