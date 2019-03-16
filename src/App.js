@@ -9,6 +9,8 @@ import theme from "./theme";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import IndexLayout, { LogIn, SignUp } from "./layouts/IndexLayout";
+import MeLayout from "./layouts/MeLayout";
+import UserPage from "./components/UserPage";
 import MapPage from "./components/MapPage";
 
 const LogInPage = () => (
@@ -23,6 +25,12 @@ const SignUpPage = () => (
     </IndexLayout>
 );
 
+const MePage = () => (
+    <MeLayout>
+        <UserPage />
+    </MeLayout>
+);
+
 // *** APP ***
 
 function AppContent() {
@@ -30,7 +38,7 @@ function AppContent() {
         <Fragment>
             <Route path='/' exact component={LogInPage} />
             <Route path='/signup' exact component={SignUpPage} />
-            <Route path='/me' exact component={MapPage} />
+            <Route path='/me' exact component={MePage} />
             <Route path='/admin' exact component={MapPage} />
         </Fragment>
     );

@@ -17,10 +17,16 @@ function SignUp() {
 
     const handleSignUp = () => {
         firebase.auth
-            .createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-            .then(user => {
+            .createUserWithEmailAndPassword(
+                emailInput.value,
+                passwordInput.value,
+            )
+            .then((user) => {
                 user.updatePhoneNumber(phoneInput.value);
-                firebase.auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value);
+                firebase.auth.signInWithEmailAndPassword(
+                    emailInput.value,
+                    passwordInput.value,
+                );
             })
             .catch(console.log);
     };
@@ -107,7 +113,12 @@ function LogIn() {
             />
 
             <div className='button-container'>
-                <Button variant='flat' color='primary' component={Link} to='/signup'>
+                <Button
+                    variant='flat'
+                    color='primary'
+                    component={Link}
+                    to='/signup'
+                >
                     Sign Up
                 </Button>
                 <Button
@@ -131,14 +142,9 @@ function IndexLayout({ children }) {
         firebase.auth.onAuthStateChanged(setLoggedIn);
     }, []);
 
-    if(loggedIn)
-        return <Redirect to='/admin' />
+    if (loggedIn) return <Redirect to='/me' />;
 
-    return (
-        <div className='IndexLayout'>
-            { children }
-        </div>
-    );
+    return <div className='IndexLayout'>{children}</div>;
 }
 
 export default IndexLayout;

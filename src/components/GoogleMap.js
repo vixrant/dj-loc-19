@@ -9,6 +9,8 @@ import {
 } from "react-google-maps";
 import { If } from "react-extras";
 
+import { useLocation } from "../util/hooks";
+
 import FireStationIcon from "./firestation.png";
 import UserIcon from "./boy.png";
 
@@ -46,27 +48,7 @@ const FIRE_STATIONS = {
 };
 
 function MyMapComponent() {
-    const [userLoc, setUserLoc] = useState(null);
-
-    useEffect(() => {
-        if (navigator.geolocation) {
-            setInterval(() => {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        setUserLoc({
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude,
-                        });
-                    },
-                    (e) => {
-                        console.error(e);
-                    },
-                );
-            }, 1000);
-        } else {
-            console.error("Browser doesn't support geolocation.");
-        }
-    }, []);
+    const userLoc = useLocation();
 
     const fireStationMarkers = [];
     for (let f in FIRE_STATIONS) {
