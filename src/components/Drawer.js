@@ -5,30 +5,56 @@ import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import { FireIcon } from "@material-ui/icons";
+import Typography from '@material-ui/core/Typography';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const drawerWidth = 220;
 
-const useStyles = makeStyles( (theme) => ({
-  drawer: {
-      zIndex: 1099,
-      width: drawerWidth,
-      flexShrink: 0,
-  },
-  drawerPaper: {
-      width: drawerWidth,
-  },
-  content: {
-      flexGrow: 1,
-      padding: '64px',
-  },
-  toolbar: {
-      height: "56px",
-  }
+const useStyles = makeStyles((theme) => ({
+    drawer: {
+        zIndex: 1099,
+        width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        width: drawerWidth,
+    },
+    content: {
+        flexGrow: 1,
+        padding: "64px",
+    },
+    toolbar: {
+        height: "56px",
+    },
 }));
+
+function FirePanel({ title, items }) {
+    return (
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h6">{ title }</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+            <List dense>
+                {items.map(
+                    (text, index) => (
+                        <ListItem button key={index}>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                    ),
+                )}
+            </List>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    );
+}
 
 function ClippedDrawer() {
     const classes = useStyles();
@@ -43,29 +69,10 @@ function ClippedDrawer() {
         >
             <div className={classes.toolbar} /> {/* Shim */}
 
-            <List>
-                {["Inbox", "Starred", "Send email", "Drafts"].map(
-                    (text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ),
-                )}
-            </List>
-            <Divider />
-            <List>
-                {["All mail", "Trash", "Spam"].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
+            <FirePanel title="Fire" items={['Borivali', 'Kandivali']} />
+
+            <FirePanel title="Bird Rescue" items={['Borivali', 'Kandivali']} />
+
         </Drawer>
     );
 }

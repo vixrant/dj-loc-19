@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 import { compose, withProps } from "recompose";
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+import {
+    withScriptjs,
+    withGoogleMap,
+    GoogleMap,
+    Marker,
+} from "react-google-maps";
 import { If } from "react-extras";
 
 import FireStationIcon from "./firestation.png";
+import UserIcon from "./boy.png";
 
 import THEME from "./mapTheme";
 
@@ -17,7 +23,7 @@ const OPTIONS = {
 };
 
 const FIRE_STATIONS = {
-    "Andheri West Fire Station":  {
+    "Andheri West Fire Station": {
         lat: 19.119503289835805,
         lng: 72.84448385238647,
     },
@@ -47,7 +53,7 @@ function MyMapComponent() {
             setInterval(() => {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        setUserLoc ({
+                        setUserLoc({
                             lat: position.coords.latitude,
                             lng: position.coords.longitude,
                         });
@@ -63,14 +69,19 @@ function MyMapComponent() {
     }, []);
 
     const fireStationMarkers = [];
-    for(let f in FIRE_STATIONS) {
-        fireStationMarkers.push(<Marker icon={{
-            url: FireStationIcon,
-            scaledSize: {
-                width: 32,
-                height: 32,
-            }
-        }} position={FIRE_STATIONS[f]} />);
+    for (let f in FIRE_STATIONS) {
+        fireStationMarkers.push(
+            <Marker
+                icon={{
+                    url: FireStationIcon,
+                    scaledSize: {
+                        width: 32,
+                        height: 32,
+                    },
+                }}
+                position={FIRE_STATIONS[f]}
+            />,
+        );
     }
 
     return (
@@ -78,10 +89,11 @@ function MyMapComponent() {
             defaultZoom={14}
             defaultCenter={DJ_SANGHVI}
             position={userLoc}
-            options={OPTIONS}>
+            options={OPTIONS}
+        >
             <If condition={!!userLoc}>
-                <Marker label={'You'} position={userLoc} />
-                { fireStationMarkers }
+                <Marker position={userLoc} icon={UserIcon} />
+                {fireStationMarkers}
             </If>
         </GoogleMap>
     );

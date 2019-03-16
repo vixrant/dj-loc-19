@@ -11,47 +11,58 @@ import "./IndexLayout.css";
 
 function SignUp({ match }) {
     const emailInput = useInput(null);
-    const passwordInput = useInput(null)
+    const passwordInput = useInput(null);
     const phoneInput = useInput(null);
 
-    // const firebase = useFirebase();
+    const firebase = useFirebase();
 
     const handleSignUp = () => {
-        
+        firebase.auth
+            .signUpWithEmailAndPassword(emailInput.value, passwordInput.value)
+            .catch(console.log);
     };
 
     return (
         <Fragment>
             <Typography variant='h5'>Sign-up as Volunteer</Typography>
 
-            <TextField 
-                label='Email' 
-                placeholder='Your email' 
-                fullWidth 
+            <TextField
+                label='Email'
+                placeholder='Your email'
+                fullWidth
                 {...emailInput}
-                />
+            />
 
-            <TextField 
-                label='Password' 
-                type="password"
-                placeholder='Your email' 
-                fullWidth 
+            <TextField
+                label='Password'
+                type='password'
+                placeholder='Your email'
+                fullWidth
                 {...passwordInput}
-                />
+            />
 
-            <TextField 
-                label='Phone Number' 
-                type="tel"
-                placeholder='Your Phone Number' 
-                fullWidth 
+            <TextField
+                label='Phone Number'
+                type='tel'
+                placeholder='Your Phone Number'
+                fullWidth
                 {...phoneInput}
-                />
+            />
 
             <div className='button-container'>
-                <Button variant="contained" color="secondary" component={Link} to={`${match.url}/login`} >
+                <Button
+                    variant='contained'
+                    color='secondary'
+                    component={Link}
+                    to={`${match.url}/login`}
+                >
                     Log In
                 </Button>
-                <Button variant="contained" color="primary" onClick={handleSignUp} >
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={handleSignUp}
+                >
                     Sign Up
                 </Button>
             </div>
@@ -66,7 +77,8 @@ function LogIn({ match }) {
     const firebase = useFirebase();
 
     const handleLogIn = (e) => {
-        firebase.auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value)
+        firebase.auth
+            .signInWithEmailAndPassword(emailInput.value, passwordInput.value)
             .catch(alert);
     };
 
@@ -75,27 +87,33 @@ function LogIn({ match }) {
             <Typography variant='h5'>Log in!</Typography>
             <br />
 
-            <TextField 
-                label='Email' 
-                type="email"
-                placeholder='Your email' 
-                fullWidth 
+            <TextField
+                label='Email'
+                type='email'
+                placeholder='Your email'
+                fullWidth
                 {...emailInput}
-                />
+            />
 
-            <TextField 
-                label='Password' 
-                type="password"
-                placeholder='Your email' 
-                fullWidth 
+            <TextField
+                label='Password'
+                type='password'
+                placeholder='Your email'
+                fullWidth
                 {...passwordInput}
-                />
+            />
 
             <div className='button-container'>
-                <Button variant="flat" color="primary" component={Link} to='/' >
+                <Button variant='flat' color='primary' component={Link} to='/'>
                     Sign Up
                 </Button>
-                <Button variant="outlined" color="primary" onClick={handleLogIn} component={Link} to='/admin' >
+                <Button
+                    variant='outlined'
+                    color='primary'
+                    onClick={handleLogIn}
+                    component={Link}
+                    to='/admin'
+                >
                     Log In
                 </Button>
             </div>
@@ -105,7 +123,7 @@ function LogIn({ match }) {
 
 function IndexLayout({ match }) {
     return (
-        <div className='IndexLayout' >
+        <div className='IndexLayout'>
             <Card className='AuthCard'>
                 <Route path={`${match.url}`} exact component={LogIn} />
                 <Route path={`${match.url}/signup`} exact component={SignUp} />

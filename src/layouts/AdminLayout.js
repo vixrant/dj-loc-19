@@ -6,9 +6,7 @@ function AdminLayout({ children }) {
     return (
         <Fragment>
             <Navbar />
-            <div style={{ flex: `1 1 auto`, display: 'flex' }}>
-                {children}
-            </div>
+            <div style={{ flex: `1 1 auto`, display: "flex" }}>{children}</div>
         </Fragment>
     );
 }

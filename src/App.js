@@ -13,7 +13,7 @@ import MapPage from "./components/MapPage";
 
 // *** APP ***
 
-function AppContent () {
+function AppContent() {
     return (
         <Fragment>
             <Route path='/' exact component={IndexLayout} />

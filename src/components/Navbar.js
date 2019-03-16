@@ -86,7 +86,7 @@ const styles = (theme) => ({
     },
     appbar: {
         backgroundColor: "rgba(10, 10, 10, 0.9)",
-    }
+    },
 });
 
 class PrimarySearchAppBar extends React.Component {
@@ -167,7 +167,7 @@ class PrimarySearchAppBar extends React.Component {
         return (
             <div className={classes.root}>
                 <AppBar position='fixed' className={classes.appbar}>
-                    <Toolbar variant="dense">
+                    <Toolbar variant='dense'>
                         <IconButton
                             className={classes.menuButton}
                             color='inherit'

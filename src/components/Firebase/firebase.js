@@ -1,9 +1,9 @@
 import app from "firebase/app";
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/firestore';
-import 'firebase/messaging';
-import 'firebase/storage';
+import "firebase/auth";
+import "firebase/database";
+import "firebase/firestore";
+import "firebase/messaging";
+import "firebase/storage";
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -24,5 +24,5 @@ class Firebase {
         this.storage = app.storage();
     }
 }
-  
+
 export default Firebase;
