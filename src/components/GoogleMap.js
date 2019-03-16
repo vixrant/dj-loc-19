@@ -14,7 +14,6 @@ import { If } from "react-extras";
 import { useLocation } from "../util/hooks";
 
 import FireStationIcon from "./firestation.png";
-import UserIcon from "./boy.png";
 import FireIcon from "./fire.png";
 import BirdIcon from "./bird.png";
 import AccidentIcon from "./accident.png";
@@ -37,6 +36,10 @@ const OPTIONS = {
     disableDefaultUI: true,
     gestureHandling: "greedy",
     styles: THEME,
+};
+
+const ROUTE_OPTIONS = {
+    suppressMarkers: true,
 };
 
 const FIRE_STATIONS = {
@@ -63,7 +66,7 @@ const FIRE_STATIONS = {
 };
 
 function MyMapComponent(props) {
-    const userLoc = useLocation();
+    const userLoc = useLocation(DJ_SANGHVI);
     const [focusedReport, setFocusedReport] = useState(null);
     const [route, setRoute] = useState(null);
 
@@ -104,18 +107,19 @@ function MyMapComponent(props) {
                 const rows = response.rows;
                 const ds = [];
                 rows.forEach(r => {
-                    const duration = _(r.elements).sum(e => e.duration.value);
+                    const duration = _(r.elements).sumBy(e => e.duration.value);
+                    console.log(r, " --> ", duration)
                     ds.push(duration);
                 })
                 const min = _.min(ds);
                 const rindex = _.findIndex(ds, e => e === min);
                 console.log('INDEX : ', rindex);
 
-                const destination = origins[rindex];
-                console.log('FOUND : ', destination);
+                const origin = origins[rindex];
+                console.log('FOUND : ', origin);
                 routeSer.route({
-                    origin: m.latLng,
-                    destination,
+                    origin,
+                    destination: m.latLng,
                     travelMode: "DRIVING",
                 }, function(response, status) {
                     setRoute(response);
@@ -129,15 +133,11 @@ function MyMapComponent(props) {
             defaultZoom={14}
             defaultCenter={DJ_SANGHVI}
             position={userLoc}
-            options={OPTIONS}
-        >
-            <If condition={!!userLoc}>
-                <Marker position={userLoc} icon={UserIcon} />
-            </If>
+            options={OPTIONS}>
             {reportMarkers}
             {fireStationMarkers}
             <If condition={!!route}>
-                <DirectionsRenderer directions={route} />
+                <DirectionsRenderer directions={route} options={ROUTE_OPTIONS} />
             </If>
         </GoogleMap>
     );
