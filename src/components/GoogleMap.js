@@ -4,22 +4,34 @@ import { compose, withProps } from "recompose";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import { If } from "react-extras";
 
+import THEME from "./mapTheme";
+
 const DJ_SANGHVI = { lat: 19.1071901, lng: 72.837155 };
+
+const OPTIONS = {
+    disableDefaultUI: true,
+    gestureHandling: "greedy",
+    styles: THEME,
+};
 
 function MyMapComponent() {
     const [userLoc, setUserLoc] = useState(null)
 
     useEffect(() => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setUserLoc ({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    });
-                },
-                console.error,
-            );
+            setInterval(() => {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        setUserLoc ({
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        });
+                    },
+                    (e) => {
+                        console.error(e);
+                    },
+                );
+            }, 1000);
         } else {
             console.error("Browser doesn't support geolocation.");
         }
@@ -27,10 +39,10 @@ function MyMapComponent() {
 
     return (
         <GoogleMap
-            defaultZoom={8}
+            defaultZoom={14}
             defaultCenter={DJ_SANGHVI}
-            disableDefaultUI={true}
-            position={userLoc}>
+            position={userLoc}
+            options={OPTIONS}>
             <If condition={!!userLoc}>
                 <Marker position={userLoc} />
             </If>

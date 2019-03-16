@@ -22,12 +22,14 @@ const MapPage = () => (
 
 // *** APP ***
 
-const AppContent = () => (
-    <Fragment>
-        <Route path='/' exact component={MapPage} />
-        <Route path='/admin' exact component={MapPage} />
-    </Fragment>
-);
+function AppContent () {
+    return (
+        <Fragment>
+            <Route path='/' exact component={MapPage} />
+            <Route path='/admin' exact component={MapPage} />
+        </Fragment>
+    );
+}
 
 function App() {
     return (
