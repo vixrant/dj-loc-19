@@ -1,11 +1,11 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment } from "react";
 
 import { Card, TextField, Typography, Button } from "@material-ui/core";
 
 import {} from "react-extras";
 import { Link, Route } from "react-router-dom";
 import { useInput } from "../util/hooks";
-import { FirebaseContext } from "../components/Firebase";
+import { useFirebase } from "../components/Firebase";
 
 import "./IndexLayout.css";
 
@@ -14,7 +14,7 @@ function SignUp({ match }) {
     const passwordInput = useInput(null)
     const phoneInput = useInput(null);
 
-    // const firebase = useContext(FirebaseContext);
+    // const firebase = useFirebase();
 
     const handleSignUp = () => {
         
@@ -63,10 +63,10 @@ function LogIn({ match }) {
     const emailInput = useInput(null);
     const passwordInput = useInput(null);
 
-    const firebase = useContext(FirebaseContext);
+    const firebase = useFirebase();
 
     const handleLogIn = (e) => {
-        firebase.auth().signInWithEmailAndPassword(emailInput.value, passwordInput.value)
+        firebase.auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value)
             .catch(alert);
     };
 

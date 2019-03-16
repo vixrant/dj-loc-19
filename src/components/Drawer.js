@@ -1,4 +1,5 @@
 import React from "react";
+
 import { makeStyles } from "@material-ui/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -40,7 +41,8 @@ function ClippedDrawer() {
                 paper: classes.drawerPaper,
             }}
         >
-            <div className={classes.toolbar} />
+            <div className={classes.toolbar} /> {/* Shim */}
+
             <List>
                 {["Inbox", "Starred", "Send email", "Drafts"].map(
                     (text, index) => (
