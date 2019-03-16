@@ -3,7 +3,7 @@ import React, { Fragment, useContext } from "react";
 import { Card, TextField, Typography, Button } from "@material-ui/core";
 
 import {} from "react-extras";
-import { Link, Route, Redirect } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { useInput } from "../util/hooks";
 import { FirebaseContext } from "../components/Firebase";
 

@@ -4,6 +4,8 @@ import { compose, withProps } from "recompose";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import { If } from "react-extras";
 
+import FireStationIcon from "./firestation.png";
+
 import THEME from "./mapTheme";
 
 const DJ_SANGHVI = { lat: 19.1071901, lng: 72.837155 };
@@ -14,8 +16,31 @@ const OPTIONS = {
     styles: THEME,
 };
 
+const FIRE_STATIONS = {
+    "Andheri West Fire Station":  {
+        lat: 19.119503289835805,
+        lng: 72.84448385238647,
+    },
+    "Andheri East Fire Station": {
+        lat: 19.1158,
+        lng: 72.85419999999999,
+    },
+    "Bandra Fire Station": {
+        lat: 19.0583358,
+        lng: 72.8302669,
+    },
+    "Juhu Fire Station": {
+        lat: 19.0916826,
+        lng: 72.827752,
+    },
+    "Byculla Fire Station": {
+        lat: 18.9750879,
+        lng: 72.8282502,
+    },
+};
+
 function MyMapComponent() {
-    const [userLoc, setUserLoc] = useState(null)
+    const [userLoc, setUserLoc] = useState(null);
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -37,6 +62,17 @@ function MyMapComponent() {
         }
     }, []);
 
+    const fireStationMarkers = [];
+    for(let f in FIRE_STATIONS) {
+        fireStationMarkers.push(<Marker icon={{
+            url: FireStationIcon,
+            scaledSize: {
+                width: 32,
+                height: 32,
+            }
+        }} position={FIRE_STATIONS[f]} />);
+    }
+
     return (
         <GoogleMap
             defaultZoom={14}
@@ -44,7 +80,8 @@ function MyMapComponent() {
             position={userLoc}
             options={OPTIONS}>
             <If condition={!!userLoc}>
-                <Marker position={userLoc} />
+                <Marker label={'You'} position={userLoc} />
+                { fireStationMarkers }
             </If>
         </GoogleMap>
     );
