@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable no-undef */
+import React, { useState, useEffect, useMemo } from "react";
 
 import { useLocation, useReports } from "../util/hooks";
 import { makeStyles } from "@material-ui/styles";
@@ -93,7 +94,8 @@ function ConfirmDialog(props) {
         .update({
             validators: [],
             location: props.location,
-        });
+        })
+        .then(() => props.cancelcb());
     };
 
     return (
@@ -122,8 +124,16 @@ function AlignItemsList(props) {
     const location = useLocation(DJ_SANGHVI);
     const reports = useReports();
     const [focusReport, setFocusReport] = useState(null);
+    // const google_maps_geocoder = useMemo(() => new google.maps.Geocoder(), []);
 
     const handleClick = id => () => setFocusReport(id);
+
+    // google_maps_geocoder.geocode(
+    //     { 'latLng': new google.maps.LatLng( location.lat, location.lng ) },
+    //     function( results, status ) {
+    //         console.log( results );
+    //     }
+    // );
 
     const reportItems = reports.filter(e => !e.location).map(doc => (
         <ReportItem key={doc.id} location={doc.area} icon={ICON_MAP[doc.type]} type={doc.type} onCheck={handleClick(doc.id)} />
@@ -152,7 +162,11 @@ function AlignItemsList(props) {
 }
 
 function UserPage() {
-    return <AlignItemsList />;
+    return (
+        <React.Fragment>
+             <AlignItemsList />
+        </React.Fragment>
+    );
 }
 
 export default UserPage;

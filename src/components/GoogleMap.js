@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react";
 
 import { compose, withProps } from "recompose";
@@ -65,6 +64,7 @@ function MyMapComponent(props) {
     const reports = props.reports.filter(e => !!e.location);
     const reportMarkers = reports.map(r => (
         <Marker
+            key={r.id}
             icon={ICON_MAP[r.type]}
             position={r.location}
         />
@@ -74,6 +74,7 @@ function MyMapComponent(props) {
     for (let f in FIRE_STATIONS) {
         fireStationMarkers.push(
             <Marker
+                key={f}
                 icon={{
                     url: FireStationIcon,
                     scaledSize: {
