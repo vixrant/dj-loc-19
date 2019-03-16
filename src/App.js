@@ -9,6 +9,7 @@ import theme from "./theme";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import GoogleMap from "./components/GoogleMap";
+import Drawer from "./components/Drawer";
 
 import AdminLayout from "./layouts/AdminLayout";
 import IndexLayout from "./layouts/IndexLayout";
@@ -17,6 +18,7 @@ import IndexLayout from "./layouts/IndexLayout";
 
 const MapPage = () => (
     <AdminLayout>
+        <Drawer />
         <GoogleMap />
     </AdminLayout>
 );
