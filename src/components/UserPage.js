@@ -3,7 +3,13 @@ import React, { useState, useEffect, useMemo } from "react";
 
 import { useLocation, useReports } from "../util/hooks";
 import { makeStyles } from "@material-ui/styles";
-import { Dialog, DialogActions, DialogContentText, Button, DialogContent } from "@material-ui/core/";
+import {
+    Dialog,
+    DialogActions,
+    DialogContentText,
+    Button,
+    DialogContent,
+} from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -44,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
     },
     LocationCard: {
-        marginTop: '16px',
+        marginTop: "16px",
         padding: "16px",
         display: "flex",
         flexDirection: "column",
@@ -73,12 +79,13 @@ function ReportItem({ location, type, number, onCheck }) {
                             color='textPrimary'
                         >
                             {type}
-                        </Typography> - {number}
+                        </Typography>{" "}
+                        - {number}
                     </React.Fragment>
                 }
             />
             <ListItemSecondaryAction>
-                <IconButton aria-label="Comments" onClick={onCheck}>
+                <IconButton aria-label='Comments' onClick={onCheck}>
                     <CheckCircleIcon />
                 </IconButton>
             </ListItemSecondaryAction>
@@ -90,12 +97,14 @@ function ConfirmDialog(props) {
     const firebase = useFirebase();
 
     const handleYes = () => {
-        firebase.firestore.collection('public-fire').doc(props.report)
-        .update({
-            validators: [],
-            location: props.location,
-        })
-        .then(() => props.cancelcb());
+        firebase.firestore
+            .collection("public-fire")
+            .doc(props.report)
+            .update({
+                validators: [],
+                location: props.location,
+            })
+            .then(() => props.cancelcb());
     };
 
     return (
@@ -103,15 +112,14 @@ function ConfirmDialog(props) {
             <DialogContent>
                 <DialogContentText>
                     Are you sure that this report is true? <br />
-                    Your location will be recorded and a unit will be dispatched. <br />
+                    Your location will be recorded and a unit will be
+                    dispatched. <br />
                     {`${props.report}`}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={props.cancelcb}>
-                    Cancel
-                </Button>
-                <Button variant="outlined" color="primary" onClick={handleYes}>
+                <Button onClick={props.cancelcb}>Cancel</Button>
+                <Button variant='outlined' color='primary' onClick={handleYes}>
                     Yes
                 </Button>
             </DialogActions>
@@ -126,7 +134,7 @@ function AlignItemsList(props) {
     const [focusReport, setFocusReport] = useState(null);
     // const google_maps_geocoder = useMemo(() => new google.maps.Geocoder(), []);
 
-    const handleClick = id => () => setFocusReport(id);
+    const handleClick = (id) => () => setFocusReport(id);
 
     // google_maps_geocoder.geocode(
     //     { 'latLng': new google.maps.LatLng( location.lat, location.lng ) },
@@ -135,28 +143,36 @@ function AlignItemsList(props) {
     //     }
     // );
 
-    const reportItems = reports.filter(e => !e.location).map(doc => (
-        <ReportItem key={doc.id} location={doc.area} icon={ICON_MAP[doc.type]} type={doc.type} onCheck={handleClick(doc.id)} />
-    ));
+    const reportItems = reports
+        .filter((e) => !e.location)
+        .map((doc) => (
+            <ReportItem
+                key={doc.id}
+                location={doc.area}
+                icon={ICON_MAP[doc.type]}
+                type={doc.type}
+                onCheck={handleClick(doc.id)}
+            />
+        ));
 
     return (
         <div className={classes.CardContainer}>
             <Card className='AreaCard'>
-                <List className={classes.root}>
-                    { reportItems }
-                </List>
+                <List className={classes.root}>{reportItems}</List>
             </Card>
 
             <Card className={classes.LocationCard}>
                 <Typography variant='h6'>Your location</Typography>
-                <Typography variant='h6'>{`Lat ${location.lat.toFixed(3)} Lng ${location.lng.toFixed(3)}`}</Typography>
+                <Typography variant='h6'>{`Lat ${location.lat.toFixed(
+                    3,
+                )} Lng ${location.lng.toFixed(3)}`}</Typography>
             </Card>
 
-            <ConfirmDialog 
+            <ConfirmDialog
                 location={location}
-                report={focusReport} 
+                report={focusReport}
                 cancelcb={() => setFocusReport(null)}
-                />
+            />
         </div>
     );
 }
@@ -164,7 +180,7 @@ function AlignItemsList(props) {
 function UserPage() {
     return (
         <React.Fragment>
-             <AlignItemsList />
+            <AlignItemsList />
         </React.Fragment>
     );
 }

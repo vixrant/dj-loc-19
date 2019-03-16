@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react";
 
 import { compose, withProps } from "recompose";
@@ -6,6 +7,7 @@ import {
     withGoogleMap,
     GoogleMap,
     Marker,
+    DirectionsRenderer,
 } from "react-google-maps";
 import { If } from "react-extras";
 
@@ -17,6 +19,8 @@ import FireIcon from "./fire.png";
 import BirdIcon from "./bird.png";
 import AccidentIcon from "./accident.png";
 import CollapseIcon from "./collapse.png";
+
+import _ from "lodash";
 
 import THEME from "./mapTheme";
 
@@ -60,16 +64,14 @@ const FIRE_STATIONS = {
 
 function MyMapComponent(props) {
     const userLoc = useLocation();
+    const [focusedReport, setFocusedReport] = useState(null);
+    const [route, setRoute] = useState(null);
 
-    const reports = props.reports.filter(e => !!e.location);
-    const reportMarkers = reports.map(r => (
-        <Marker
-            key={r.id}
-            icon={ICON_MAP[r.type]}
-            position={r.location}
-        />
+    const reports = props.reports.filter((e) => !!e.location);
+    const reportMarkers = reports.map((r) => (
+        <Marker key={r.id} icon={ICON_MAP[r.type]} position={r.location} onClick={onMarkerClick} />
     ));
-    
+
     const fireStationMarkers = [];
     for (let f in FIRE_STATIONS) {
         fireStationMarkers.push(
@@ -87,6 +89,41 @@ function MyMapComponent(props) {
         );
     }
 
+    function onMarkerClick(m) {
+        const routeSer = new google.maps.DirectionsService();
+        const distanceMat = new google.maps.DistanceMatrixService();
+        const origins = _(FIRE_STATIONS).values().map(e => new google.maps.LatLng(e.lat, e.lng)).value();
+        distanceMat.getDistanceMatrix(
+            {
+                origins,
+                destinations: [m.latLng],
+                travelMode: "DRIVING",
+            },
+            function callback(response, status) {
+                console.log(response);
+                const rows = response.rows;
+                const ds = [];
+                rows.forEach(r => {
+                    const duration = _(r.elements).sum(e => e.duration.value);
+                    ds.push(duration);
+                })
+                const min = _.min(ds);
+                const rindex = _.findIndex(ds, e => e === min);
+                console.log('INDEX : ', rindex);
+
+                const destination = origins[rindex];
+                console.log('FOUND : ', destination);
+                routeSer.route({
+                    origin: m.latLng,
+                    destination,
+                    travelMode: "DRIVING",
+                }, function(response, status) {
+                    setRoute(response);
+                })
+            },
+        );
+    }
+
     return (
         <GoogleMap
             defaultZoom={14}
@@ -99,6 +136,9 @@ function MyMapComponent(props) {
             </If>
             {reportMarkers}
             {fireStationMarkers}
+            <If condition={!!route}>
+                <DirectionsRenderer directions={route} />
+            </If>
         </GoogleMap>
     );
 }
