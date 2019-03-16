@@ -44,11 +44,11 @@ function useReports() {
 
     useEffect(() => {
         firebase.firestore.collection("public-fire").onSnapshot((qs) => {
-            let x = Array();
+            let x = [];
             qs.forEach((doc) =>
                 x.push({
                     id: doc.id,
-                    data: doc.data(),
+                    ...doc.data(),
                 }),
             );
             setReports(x);

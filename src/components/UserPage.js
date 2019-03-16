@@ -125,13 +125,13 @@ function AlignItemsList(props) {
 
     const handleClick = id => () => setFocusReport(id);
 
-    const reportItems = reports.map(doc => (
-        <ReportItem key={doc.id} location={doc.data.area} icon={ICON_MAP[doc.data.type]} type={doc.data.type} onCheck={handleClick(doc.id)} />
+    const reportItems = reports.filter(e => !e.location).map(doc => (
+        <ReportItem key={doc.id} location={doc.area} icon={ICON_MAP[doc.type]} type={doc.type} onCheck={handleClick(doc.id)} />
     ));
 
     return (
         <div className={classes.CardContainer}>
-            <Card className='AuthCard'>
+            <Card className='AreaCard'>
                 <List className={classes.root}>
                     { reportItems }
                 </List>

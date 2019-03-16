@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react";
 
 import { compose, withProps } from "recompose";
@@ -13,10 +14,21 @@ import { useLocation } from "../util/hooks";
 
 import FireStationIcon from "./firestation.png";
 import UserIcon from "./boy.png";
+import FireIcon from "./fire.png";
+import BirdIcon from "./bird.png";
+import AccidentIcon from "./accident.png";
+import CollapseIcon from "./collapse.png";
 
 import THEME from "./mapTheme";
 
 const DJ_SANGHVI = { lat: 19.1071901, lng: 72.837155 };
+
+const ICON_MAP = {
+    fire: FireIcon,
+    bird: BirdIcon,
+    accident: AccidentIcon,
+    collapse: CollapseIcon,
+};
 
 const OPTIONS = {
     disableDefaultUI: true,
@@ -47,9 +59,17 @@ const FIRE_STATIONS = {
     },
 };
 
-function MyMapComponent() {
+function MyMapComponent(props) {
     const userLoc = useLocation();
 
+    const reports = props.reports.filter(e => !!e.location);
+    const reportMarkers = reports.map(r => (
+        <Marker
+            icon={ICON_MAP[r.type]}
+            position={r.location}
+        />
+    ));
+    
     const fireStationMarkers = [];
     for (let f in FIRE_STATIONS) {
         fireStationMarkers.push(
@@ -75,8 +95,9 @@ function MyMapComponent() {
         >
             <If condition={!!userLoc}>
                 <Marker position={userLoc} icon={UserIcon} />
-                {fireStationMarkers}
             </If>
+            {reportMarkers}
+            {fireStationMarkers}
         </GoogleMap>
     );
 }

@@ -54,7 +54,9 @@ function DataPanel({ title, items, expanded }) {
 
 function ClippedDrawer() {
     const classes = useStyles();
-    const reports = useReports();
+    let reports = useReports();
+
+    reports = reports.filter(e => !!e.location);
 
     return (
         <Drawer
@@ -67,15 +69,21 @@ function ClippedDrawer() {
             <div className={classes.toolbar} /> {/* Shim */}
             <DataPanel
                 title='Fire'
-                items={reports.map((e) => e.data.area)}
+                items={reports.filter(e => e.type === 'fire').map((doc) => doc.area)}
                 expanded
             />
             <DataPanel
                 title='Structure Collapse'
-                items={["Borivali", "Kandivali"]}
+                items={reports.filter(e => e.type === 'collapse').map((doc) => doc.area)}
             />
-            <DataPanel title='Accidents' items={["Borivali", "Kandivali"]} />
-            <DataPanel title='Bird Rescue' items={["Borivali", "Kandivali"]} />
+            <DataPanel 
+                title='Accidents' 
+                items={reports.filter(e => e.type === 'accident').map((doc) => doc.area)}
+            />
+            <DataPanel 
+                title='Bird Rescue' 
+                items={reports.filter(e => e.type === 'bird').map((doc) => doc.area)}
+            />
         </Drawer>
     );
 }
