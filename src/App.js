@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import GoogleMap from "./components/GoogleMap";
 
 import AdminLayout from "./layouts/AdminLayout";
+import IndexLayout from "./layouts/IndexLayout";
 
 // *** PAGES ***
 
@@ -25,7 +26,7 @@ const MapPage = () => (
 function AppContent () {
     return (
         <Fragment>
-            <Route path='/' exact component={MapPage} />
+            <Route path='/' exact component={IndexLayout} />
             <Route path='/admin' exact component={MapPage} />
         </Fragment>
     );

@@ -1,0 +1,28 @@
+.IndexLayout {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: center;
+    align-items: center;
+
+    padding: 8px;
+
+    background:#f62459;
+}
+
+.AuthCard {
+    padding: 32px 16px 0px 16px;
+}
+
+.button-container {
+    width: 100%;
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.button-container > a {
+    margin-left: 8px;
+}
+
