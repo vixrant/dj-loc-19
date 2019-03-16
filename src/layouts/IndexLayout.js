@@ -1,15 +1,14 @@
-import React, { Fragment } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Card, TextField, Typography, Button } from "@material-ui/core";
 
-import {} from "react-extras";
-import { Link, Route } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useInput } from "../util/hooks";
 import { useFirebase } from "../components/Firebase";
 
 import "./IndexLayout.css";
 
-function SignUp({ match }) {
+function SignUp() {
     const emailInput = useInput(null);
     const passwordInput = useInput(null);
     const phoneInput = useInput(null);
@@ -18,12 +17,16 @@ function SignUp({ match }) {
 
     const handleSignUp = () => {
         firebase.auth
-            .signUpWithEmailAndPassword(emailInput.value, passwordInput.value)
+            .createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+            .then(user => {
+                user.updatePhoneNumber(phoneInput.value);
+                firebase.auth.signInWithEmailAndPassword(emailInput.value, passwordInput.value);
+            })
             .catch(console.log);
     };
 
     return (
-        <Fragment>
+        <Card className='AuthCard'>
             <Typography variant='h5'>Sign-up as Volunteer</Typography>
 
             <TextField
@@ -51,26 +54,26 @@ function SignUp({ match }) {
 
             <div className='button-container'>
                 <Button
-                    variant='contained'
-                    color='secondary'
+                    variant='flat'
+                    color='primary'
                     component={Link}
-                    to={`${match.url}/login`}
+                    to={`/`}
                 >
                     Log In
                 </Button>
                 <Button
-                    variant='contained'
+                    variant='outlined'
                     color='primary'
                     onClick={handleSignUp}
                 >
                     Sign Up
                 </Button>
             </div>
-        </Fragment>
+        </Card>
     );
 }
 
-function LogIn({ match }) {
+function LogIn() {
     const emailInput = useInput(null);
     const passwordInput = useInput(null);
 
@@ -83,7 +86,7 @@ function LogIn({ match }) {
     };
 
     return (
-        <Fragment>
+        <Card className='AuthCard'>
             <Typography variant='h5'>Log in!</Typography>
             <br />
 
@@ -104,32 +107,39 @@ function LogIn({ match }) {
             />
 
             <div className='button-container'>
-                <Button variant='flat' color='primary' component={Link} to='/'>
+                <Button variant='flat' color='primary' component={Link} to='/signup'>
                     Sign Up
                 </Button>
                 <Button
                     variant='outlined'
                     color='primary'
                     onClick={handleLogIn}
-                    component={Link}
-                    to='/admin'
                 >
                     Log In
                 </Button>
             </div>
-        </Fragment>
+        </Card>
     );
 }
 
-function IndexLayout({ match }) {
+function IndexLayout({ children }) {
+    const [loggedIn, setLoggedIn] = useState(null);
+    const firebase = useFirebase();
+
+    useEffect(() => {
+        // firebase.auth.signOut();
+        firebase.auth.onAuthStateChanged(setLoggedIn);
+    }, []);
+
+    if(loggedIn)
+        return <Redirect to='/admin' />
+
     return (
         <div className='IndexLayout'>
-            <Card className='AuthCard'>
-                <Route path={`${match.url}`} exact component={LogIn} />
-                <Route path={`${match.url}/signup`} exact component={SignUp} />
-            </Card>
+            { children }
         </div>
     );
 }
 
 export default IndexLayout;
+export { LogIn, SignUp };

@@ -8,15 +8,29 @@ import theme from "./theme";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import IndexLayout from "./layouts/IndexLayout";
+import IndexLayout, { LogIn, SignUp } from "./layouts/IndexLayout";
 import MapPage from "./components/MapPage";
+
+const LogInPage = () => (
+    <IndexLayout>
+        <LogIn />
+    </IndexLayout>
+);
+
+const SignUpPage = () => (
+    <IndexLayout>
+        <SignUp />
+    </IndexLayout>
+);
 
 // *** APP ***
 
 function AppContent() {
     return (
         <Fragment>
-            <Route path='/' exact component={IndexLayout} />
+            <Route path='/' exact component={LogInPage} />
+            <Route path='/signup' exact component={SignUpPage} />
+            <Route path='/me' exact component={MapPage} />
             <Route path='/admin' exact component={MapPage} />
         </Fragment>
     );

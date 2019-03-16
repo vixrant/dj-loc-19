@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { useFirebase } from "./Firebase";
 
 import { makeStyles } from "@material-ui/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import { FireIcon } from "@material-ui/icons";
 import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -35,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function FirePanel({ title, items }) {
+function DataPanel({ title, items, expanded }) {
     return (
-      <ExpansionPanel>
+      <ExpansionPanel defaultExpanded={expanded} >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h6">{ title }</Typography>
         </ExpansionPanelSummary>
@@ -58,6 +56,22 @@ function FirePanel({ title, items }) {
 
 function ClippedDrawer() {
     const classes = useStyles();
+    const firebase = useFirebase();
+
+    const [fires, setFires] = useState([]);
+
+    useEffect(() => {
+        firebase.firestore.collection('public-fire').onSnapshot(qs => {
+            let x = Array();
+            qs.forEach(doc => x.push({
+                id: doc.id,
+                data: doc.data(),
+            }));
+            setFires(x);
+        });
+
+        return firebase.firestore.collection('public-fire').onSnapshot(() => {})
+    }, []);
 
     return (
         <Drawer
@@ -69,9 +83,10 @@ function ClippedDrawer() {
         >
             <div className={classes.toolbar} /> {/* Shim */}
 
-            <FirePanel title="Fire" items={['Borivali', 'Kandivali']} />
-
-            <FirePanel title="Bird Rescue" items={['Borivali', 'Kandivali']} />
+            <DataPanel title="Fire" items={fires.map(e => e.data.area)} expanded />
+            <DataPanel title="Structure Collapse" items={['Borivali', 'Kandivali']} />
+            <DataPanel title="Accidents" items={['Borivali', 'Kandivali']} />
+            <DataPanel title="Bird Rescue" items={['Borivali', 'Kandivali']} />
 
         </Drawer>
     );
