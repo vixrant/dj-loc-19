@@ -46,7 +46,7 @@ function AppContent() {
 
 function App() {
     return (
-        <FirebaseContext.Provider value={new Firebase()}>
+        <FirebaseContext.Provider value={Firebase}>
             <Router>
                 <MuiThemeProvider theme={theme}>
                     <CssBaseline />

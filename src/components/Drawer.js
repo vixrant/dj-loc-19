@@ -41,9 +41,12 @@ function DataPanel({ title, items, expanded }) {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <List dense>
-                    {items.map((text, index) => (
+                    {items.map((doc, index) => (
                         <ListItem button key={index}>
-                            <ListItemText primary={text} />
+                            <ListItemText
+                                primary={doc.area}
+                                secondary={doc.validator}
+                            />
                         </ListItem>
                     ))}
                 </List>
@@ -69,28 +72,20 @@ function ClippedDrawer() {
             <div className={classes.toolbar} /> {/* Shim */}
             <DataPanel
                 title='Fire'
-                items={reports
-                    .filter((e) => e.type === "fire")
-                    .map((doc) => doc.area)}
+                items={reports.filter((e) => e.type === "fire")}
                 expanded
             />
             <DataPanel
                 title='Structure Collapse'
-                items={reports
-                    .filter((e) => e.type === "collapse")
-                    .map((doc) => doc.area)}
+                items={reports.filter((e) => e.type === "collapse")}
             />
             <DataPanel
                 title='Accidents'
-                items={reports
-                    .filter((e) => e.type === "accident")
-                    .map((doc) => doc.area)}
+                items={reports.filter((e) => e.type === "accident")}
             />
             <DataPanel
                 title='Bird Rescue'
-                items={reports
-                    .filter((e) => e.type === "bird")
-                    .map((doc) => doc.area)}
+                items={reports.filter((e) => e.type === "bird")}
             />
         </Drawer>
     );

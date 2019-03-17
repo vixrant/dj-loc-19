@@ -198,12 +198,12 @@ class PrimarySearchAppBar extends React.Component {
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <IconButton color='inherit'>
-                                <Badge badgeContent={4} color='error'>
+                                <Badge badgeContent={0} color='error'>
                                     <MailIcon />
                                 </Badge>
                             </IconButton>
                             <IconButton color='inherit'>
-                                <Badge badgeContent={17} color='error'>
+                                <Badge badgeContent={0} color='error'>
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>

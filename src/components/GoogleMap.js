@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 import { Snackbar, Button, IconButton } from "@material-ui/core";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 
 import { compose, withProps } from "recompose";
 import {
@@ -25,7 +25,6 @@ import CollapseIcon from "./collapse.png";
 import _ from "lodash";
 
 import THEME from "./mapTheme";
-import { useFirebase } from "./Firebase";
 
 const DJ_SANGHVI = { lat: 19.1071901, lng: 72.837155 };
 
@@ -72,37 +71,46 @@ const FIRE_STATIONS = {
 function DeployKaSnackbar({ route, cancelcb }) {
     return (
         <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={!!route}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">Deploy a unit? </span>}
-          action={[
-            <Button key="undo" color="primary" size="small" onClick={cancelcb}>
-              DEPLOY
-            </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={cancelcb}
-            >
-              <CloseIcon />
-            </IconButton>,
-          ]}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            open={!!route}
+            ContentProps={{
+                "aria-describedby": "message-id",
+            }}
+            message={<span id='message-id'>Deploy a unit? </span>}
+            action={[
+                <Button
+                    key='undo'
+                    color='primary'
+                    size='small'
+                    onClick={cancelcb}
+                >
+                    DEPLOY
+                </Button>,
+                <IconButton
+                    key='close'
+                    aria-label='Close'
+                    color='inherit'
+                    onClick={cancelcb}
+                >
+                    <CloseIcon />
+                </IconButton>,
+            ]}
         />
     );
 }
 
 function MyMapComponent(props) {
     const userLoc = useLocation(DJ_SANGHVI);
-    const [focusedReport, setFocusedReport] = useState(null);
     const [route, setRoute] = useState(null);
 
     const reports = props.reports.filter((e) => !!e.location);
     const reportMarkers = reports.map((r) => (
-        <Marker key={r.id} icon={ICON_MAP[r.type]} position={r.location} onClick={onMarkerClick} />
+        <Marker
+            key={r.id}
+            icon={ICON_MAP[r.type]}
+            position={r.location}
+            onClick={onMarkerClick}
+        />
     ));
 
     const fireStationMarkers = [];
@@ -125,7 +133,10 @@ function MyMapComponent(props) {
     function onMarkerClick(m) {
         const routeSer = new google.maps.DirectionsService();
         const distanceMat = new google.maps.DistanceMatrixService();
-        const origins = _(FIRE_STATIONS).values().map(e => new google.maps.LatLng(e.lat, e.lng)).value();
+        const origins = _(FIRE_STATIONS)
+            .values()
+            .map((e) => new google.maps.LatLng(e.lat, e.lng))
+            .value();
 
         distanceMat.getDistanceMatrix(
             {
@@ -137,24 +148,29 @@ function MyMapComponent(props) {
                 console.log(response);
                 const rows = response.rows;
                 const ds = [];
-                rows.forEach(r => {
-                    const duration = _(r.elements).sumBy(e => e.duration.value);
-                    console.log(r, " --> ", duration)
+                rows.forEach((r) => {
+                    const duration = _(r.elements).sumBy(
+                        (e) => e.duration.value,
+                    );
+                    console.log(r, " --> ", duration);
                     ds.push(duration);
-                })
+                });
                 const min = _.min(ds);
-                const rindex = _.findIndex(ds, e => e === min);
-                console.log('INDEX : ', rindex);
+                const rindex = _.findIndex(ds, (e) => e === min);
+                console.log("INDEX : ", rindex);
 
                 const origin = origins[rindex];
-                console.log('FOUND : ', origin);
-                routeSer.route({
-                    origin,
-                    destination: m.latLng,
-                    travelMode: "DRIVING",
-                }, function(response) {
-                    setRoute(response);
-                })
+                console.log("FOUND : ", origin);
+                routeSer.route(
+                    {
+                        origin,
+                        destination: m.latLng,
+                        travelMode: "DRIVING",
+                    },
+                    function(response) {
+                        setRoute(response);
+                    },
+                );
             },
         );
     }
@@ -164,11 +180,15 @@ function MyMapComponent(props) {
             defaultZoom={14}
             defaultCenter={DJ_SANGHVI}
             position={userLoc}
-            options={OPTIONS}>
+            options={OPTIONS}
+        >
             {reportMarkers}
             {fireStationMarkers}
             <If condition={!!route}>
-                <DirectionsRenderer directions={route} options={ROUTE_OPTIONS} />
+                <DirectionsRenderer
+                    directions={route}
+                    options={ROUTE_OPTIONS}
+                />
             </If>
 
             <DeployKaSnackbar route={route} cancelcb={() => setRoute(null)} />

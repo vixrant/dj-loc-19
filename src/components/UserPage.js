@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 
 import { useLocation, useReports } from "../util/hooks";
 import { makeStyles } from "@material-ui/styles";
@@ -61,6 +61,8 @@ const useStyles = makeStyles((theme) => ({
 
 const DJ_SANGHVI = { lat: 19.1071901, lng: 72.837155 };
 
+const UserContext = createContext(null);
+
 function ReportItem({ location, type, number, onCheck }) {
     const classes = useStyles();
 
@@ -95,13 +97,14 @@ function ReportItem({ location, type, number, onCheck }) {
 
 function ConfirmDialog(props) {
     const firebase = useFirebase();
+    const user = useContext(UserContext);
 
     const handleYes = () => {
         firebase.firestore
             .collection("public-fire")
             .doc(props.report)
             .update({
-                validators: [],
+                validator: user.email,
                 location: props.location,
             })
             .then(() => props.cancelcb());
@@ -132,16 +135,8 @@ function AlignItemsList(props) {
     const location = useLocation(DJ_SANGHVI);
     const reports = useReports();
     const [focusReport, setFocusReport] = useState(null);
-    // const google_maps_geocoder = useMemo(() => new google.maps.Geocoder(), []);
 
     const handleClick = (id) => () => setFocusReport(id);
-
-    // google_maps_geocoder.geocode(
-    //     { 'latLng': new google.maps.LatLng( location.lat, location.lng ) },
-    //     function( results, status ) {
-    //         console.log( results );
-    //     }
-    // );
 
     const reportItems = reports
         .filter((e) => !e.location)
@@ -178,10 +173,17 @@ function AlignItemsList(props) {
 }
 
 function UserPage() {
+    const firebase = useFirebase();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        firebase.auth.onAuthStateChanged(setUser);
+    }, []);
+
     return (
-        <React.Fragment>
+        <UserContext.Provider value={user}>
             <AlignItemsList />
-        </React.Fragment>
+        </UserContext.Provider>
     );
 }
 

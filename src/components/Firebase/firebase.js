@@ -1,4 +1,4 @@
-import app from "firebase/app";
+import firebase from "firebase";
 import "firebase/auth";
 import "firebase/database";
 import "firebase/firestore";
@@ -16,13 +16,13 @@ const config = {
 
 class Firebase {
     constructor() {
-        app.initializeApp(config);
+        const app = firebase.initializeApp(config);
         this.auth = app.auth();
         this.db = app.database();
         this.firestore = app.firestore();
-        this.messaging = app.messaging();
+        // this.messaging = app.messaging();
         this.storage = app.storage();
     }
 }
 
-export default Firebase;
+export default new Firebase();

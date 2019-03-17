@@ -138,7 +138,7 @@ function IndexLayout({ children }) {
     const firebase = useFirebase();
 
     useEffect(() => {
-        // firebase.auth.signOut();
+        firebase.auth.signOut();
         firebase.auth.onAuthStateChanged(setLoggedIn);
     }, []);
 
