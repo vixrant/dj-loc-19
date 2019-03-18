@@ -40,7 +40,7 @@ I have used: *Authentication (Email & Password provider)* and *Cloud Firestore*.
 
 #### Chatbot:
 
-This solution depends on my configured Dialogflow and Firebase projects.
+This solution depends on my configured Dialogflow. `mumareas.csv` is a CSV files of all the areas in Mumbai, taken from [Wikipedia](https://en.wikipedia.org/wiki/List_of_neighbourhoods_in_Mumbai).
 
 ## Solution technology Stack
 
