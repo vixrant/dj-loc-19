@@ -7,13 +7,13 @@ Byculla Flames is a simpler way of reporting minor fires in Mumbai.
 ![Backend](https://img.shields.io/badge/Backend-Firebase-orange.svg)
 [![HitCount](http://hits.dwyl.io/vixrant/dj-loc-19.svg)](http://hits.dwyl.io/vixrant/dj-loc-19)
 
-![chatbot](/docs/img/chatbot.png)
+![chatbot](/docs/img/chatbot.png) <br>
 _General public can report a minor fire by tweeting to a Twitter chatbot._
 
-![volunteer](/docs/img/pwa.jpg)
+![volunteer](/docs/img/pwa.jpg) <br>
 _These reports are then verified by a trained volunteer. Firestations in Mumbai train over 2000 volunteers all over Mumbai. This is a Progressive Web App._
 
-![map](/docs/img/map.png)
+![map](/docs/img/map.png) <br>
 _The reports are then displayed on the admin site._
 _The admin map tells you where the fire is and which is the nearest firesation to deploy a firefighters unit to._
 
