@@ -19,8 +19,6 @@ _The admin map tells you where the fire is and which is the nearest firesation t
 
 ## Build instructions
 
-#### Nodemcu ESP8266:
-
 #### React Dashboard:
 
 Install all packages using `npm install` or `yarn install`.
